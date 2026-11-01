@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@500;700;800;900&display=swap');
+:root{--ink:#493527;--blue:#078bd4;--pink:#f47ca0;--cream:#fffaf0;--gold:#f4b849}
+html{background:#f1e6cf}body{font-family:'M PLUS Rounded 1c','Hiragino Maru Gothic ProN',sans-serif;color:var(--ink);background:radial-gradient(circle at 15% 20%,#fff7d6 0,transparent 40%),#f4ead6}
+#app{background:#fff9ec;box-shadow:0 0 35px #73533229;min-height:100dvh}
+button{transition:transform .13s,filter .13s;touch-action:manipulation}button:active{transform:scale(.96);filter:brightness(.96)}button:focus-visible{outline:4px solid #146ec9;outline-offset:3px}
+.screen{background:radial-gradient(#efd8ad 0.7px,transparent .7px) 0 0/9px 9px,#fffaf0;min-height:100dvh;padding:22px 20px 40px}
+.screen h1{font-size:clamp(24px,6vw,31px);line-height:1.45;color:#087ec4;text-shadow:2px 2px 0 white}
+.screen h2{font-size:20px;color:#c96e28}
+.hero{position:relative;overflow:hidden;border:4px solid #fff;outline:3px solid #e9c98c;border-radius:26px;background:linear-gradient(180deg,#bde9ff 0%,#e7f7ff 53%,#fff5ce 54%,#d8eda6 100%);box-shadow:0 8px 0 #e8d3a8}
+.hero:before{content:'☁️';position:absolute;left:3%;top:24%;font-size:45px;opacity:.8}.hero:after{content:'🌼 🌷 🌼';position:absolute;right:1%;bottom:5%;font-size:24px;opacity:.9}
+.hero .title{font-size:clamp(27px,7vw,39px);font-weight:900;line-height:1.35;letter-spacing:1px;color:#0b8bd5;-webkit-text-stroke:.4px #155f96;text-shadow:3px 3px 0 #fff,5px 5px 0 #f5c866}
+.hero svg{position:relative;z-index:1;filter:drop-shadow(2px 5px 0 #7956323a);width:min(62%,225px);height:auto;animation:bob 3.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+.hero p{font-weight:800;position:relative;z-index:2}
+.primary{border:2px solid #c97220;background:linear-gradient(180deg,#ffba58,#f88b31);box-shadow:0 5px 0 #c76b27,0 8px 0 #eed9b1;border-radius:22px;min-height:46px}
+.primary.wide{min-height:60px;font-size:18px}
+.secondary{background:#fff;border:3px solid #eea5b5;color:#b13e6a;box-shadow:0 4px 0 #eac6cf}
+.card,.mission{border:3px solid #eab76c;background:#fff9e9;box-shadow:0 4px 0 #f3ddbc;position:relative}
+.card:before{content:'✦';position:absolute;right:14px;top:8px;color:#edb94d;font-size:24px}
+.item{box-shadow:0 2px 0 #d8e8c4;gap:8px}.item button{min-height:40px}
+.top{background:#fff5d8;border-bottom:3px dashed #edcc92}.brand{font-size:19px;line-height:1.2;color:#0783ce;text-shadow:2px 2px white}
+.pill{background:#fff4ad;border:2px solid #f1b84e;box-shadow:0 3px #e9cc85}
+.map{background:#c8e8a7;border:5px solid #f1ca7c;border-radius:20px;box-shadow:inset 0 0 0 2px white,0 5px 0 #e2c595;max-height:620px}
+.spot{border:3px solid #fff;border-radius:17px;box-shadow:0 5px 0 #a38e6e,0 8px 9px #584a3226;color:#674324;line-height:1.25;font-size:14px;text-shadow:1px 1px white}
+.spot .emoji{filter:drop-shadow(1px 3px 0 #a8844c66);font-size:43px;margin-bottom:5px}
+.dragon{filter:drop-shadow(0 6px 1px #5a83465c);z-index:5}.dragon svg{animation:bob 2.2s ease-in-out infinite}
+.bubble{border:3px solid #f5a2b9;box-shadow:0 3px 0 #e8bfcb;background:#fffefa;color:#a3496c;top:-41px;left:-28px}
+.bottom{background:linear-gradient(#fff9e6,#fff4d8);border-top:3px dashed #e8c990}
+.mission h3{font-size:16px}.nav{gap:5px}.nav button{padding:10px 3px;font-size:11px;line-height:1.5;background:#fffefa;border:2px solid #91c6d9;border-radius:14px;box-shadow:0 3px 0 #d6e7e8}
+.progress{background:#e5f4d8;border-radius:16px;display:inline-block;padding:6px 10px;color:#487e4a}
+.event{position:relative;overflow:hidden;border:4px solid #d8d2ff;box-shadow:0 5px #c9c5e6;cursor:pointer;background:radial-gradient(ellipse at 65% 35%,#455aa1,#0c1746 75%);min-height:420px}
+.event:before{content:'✦  ·  ✧  ✦  ·  ✧  ✦  ·  ✧  ✦';position:absolute;top:18%;left:0;width:100%;color:#f8e8a3;font-size:21px;letter-spacing:9px;animation:twinkle 3s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.4}to{opacity:1}}
+.event .sky{position:relative;z-index:1;font-size:44px;letter-spacing:4px;margin:70px 0 35px}
+.note{color:#746b5d}.small{line-height:1.6}
+@media(max-width:390px){.spot{width:137px;font-size:13px}.top{padding:9px}.bottom{padding:9px}.nav button{font-size:10px}.screen{padding:18px 14px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
