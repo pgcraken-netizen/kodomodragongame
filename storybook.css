@@ -90,3 +90,14 @@ button{transition:transform .13s,filter .13s;touch-action:manipulation}button:ac
 .forest-footer{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;padding:4px 6px max(8px,env(safe-area-inset-bottom));font-size:10px;flex-shrink:0}.forest-footer button{background:#fff9e4;border:1px solid #dbcfae;border-radius:20px;padding:8px;min-height:40px;color:#6a6d46}.forest-footer span{color:#89825e}
 .forest-complete{border-radius:24px;padding:35px 14px 15px;text-align:center;background:linear-gradient(#ffffdf55,#fff5dbee),url('/assets/forest-painted.webp') center/cover}.forest-complete .character{width:155px}.forest-complete h2{font-size:20px;color:#5c753f}.forest-complete p{line-height:1.8;color:#5b6348}
 @media(max-width:350px){.forest-header{gap:6px;padding:8px}.forest-header h1{font-size:15px}.forest-pad{padding-inline:16px}.forest-pad .action-button{width:57px;height:57px}.forest-message{font-size:11px}.forest-footer span{display:none}}
+/* User-provided cover, preserved in full with aligned accessible hit areas. */
+.cover-page{min-height:100svh;display:grid;place-items:center;background:#fff8dc;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.cover-art{position:relative;width:100%;isolation:isolate}
+.cover-image{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.cover-button{position:absolute;background:transparent;border:0;padding:0;box-shadow:none;border-radius:999px;min-height:44px;touch-action:manipulation;transition:background .15s;z-index:1}
+.cover-button:hover{background:#fff6c51f}.cover-button:active{transform:none;filter:none;background:#ffc35b30}.cover-button:focus-visible{outline:4px solid #075ab1;outline-offset:1px;background:#ffffff30}
+.cover-play{left:25.5%;top:75.3%;width:46%;height:10.3%}
+.cover-help{left:12.7%;top:87.3%;width:22.8%;height:8%}
+.cover-parents{left:37.3%;top:87.3%;width:23.8%;height:8%}
+.cover-settings{left:63.1%;top:87.3%;width:22.2%;height:8%}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
