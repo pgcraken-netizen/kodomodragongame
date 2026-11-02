@@ -5,6 +5,7 @@
   let facing = rows[state.facing] === undefined ? 'down' : state.facing;
   let frame = 0, last = 0, elapsed = 0, target = null, arrival = null;
   let jumpAt = 0, moving = false, actor = null, map = null, status = null;
+  let entranceCooldown=performance.now()+1500, entranceCandidate=null, entranceAt=0;
   let nearest = null, lastMessage = '', messageUntil = 0, pan = null;
   const pointers = new Map(), keys = new Set();
   const keyDirections = {ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
@@ -63,7 +64,7 @@
   }
   function refreshPrompt(time) {
     nearest=getNearest();
-    const text=time<messageUntil?lastMessage:nearest?'A：'+nearest.name+'で おはなし':'十字キーで おさんぽ ・ Bで ジャンプ';
+    const text=time<messageUntil?lastMessage:nearest?'🚪 '+nearest.name+'の とびらへ！':'十字キーで とびらへ ・ Aで しらべる';
     if(status&&status.textContent!==text)status.textContent=text;
     const a=document.querySelector('[data-action="a"]');if(a){a.classList.toggle('ready',Boolean(nearest));a.setAttribute('aria-label',nearest?'A '+nearest.name+'をしらべる':'A 手をふる');}
   }
@@ -89,17 +90,27 @@
       if(!manual&&length<=SPEED*dt+.1){const id=arrival;target=arrival=null;state.facing=facing;save();if(id){openPlace(id);return;}}
     }else elapsed=0;
     if(wasMoving&&!moving){state.facing=facing;save();}
+    // Doors activate automatically after the player stands at their entrance.
+    // Re-entry is suppressed briefly after returning from a building.
+    if(time>entranceCooldown&&moving&&!jumpAt){
+      const doorway=places.find(p=>Math.hypot(state.position.x-(p.x+32),state.position.y-(p.y+100))<36);
+      if(doorway){
+        if(entranceCandidate!==doorway.id){entranceCandidate=doorway.id;entranceAt=time;}
+        if(time-entranceAt>100){entranceCooldown=time+1700;entranceCandidate=null;target=arrival=null;window.playGameSound?.('arrive');openPlace(doorway.id);return;}
+      }else entranceCandidate=null;
+    }
     paint(time);refreshPrompt(time);frame=requestAnimationFrame(step);
   }
-  function openPlace(id){hint=id;if(!state.seen.includes(id))state.seen.push(id);save();show('place');}
+  function openPlace(id){entranceCooldown=performance.now()+1800;hint=id;if(!state.seen.includes(id))state.seen.push(id);save();show('place');}
   walk=function(x,y){if(screen!=='map')return;target={x:Math.max(0,Math.min(LIMIT_X,x)),y:Math.max(0,Math.min(LIMIT_Y,y))};arrival=null;};
   visit=function(id){const p=places.find(p=>p.id===id);if(!p)return;if(screen!=='map'){state.position={x:p.x+32,y:p.y+100};openPlace(id);return;}walk(p.x+32,p.y+100);arrival=id;};
   function actionA(){if(screen!=='map')return;nearest=getNearest();if(nearest)openPlace(nearest.id);else{facing='down';notify('やっほー！ たてものの ちかくで Aを おしてね');actor?.classList.remove('waving');void actor?.offsetWidth;actor?.classList.add('waving');}}
   function actionB(){if(screen!=='map'||jumpAt)return;jumpAt=performance.now();tone();notify('ぴょん！');}
   function mount(){
+    entranceCooldown=performance.now()+1500;
     map=document.getElementById('map');actor=document.getElementById('dragon');
     actor.innerHTML='<span class="walker-shadow"></span><span class="walker" role="img" aria-label="子どもドラゴン"></span>';
-    document.querySelector('.map-tip').textContent='十字キーで あるく ・ Aで おはなし ・ Bで ジャンプ';
+    document.querySelector('.map-tip').textContent='十字キーで とびらへ いくと はいれるよ！';
     map.insertAdjacentHTML('afterend','<section class="game-controls" aria-label="ゲーム操作"><div class="dpad" role="group" aria-label="移動キー">'+[['up','↑','うえ'],['left','←','ひだり'],['right','→','みぎ'],['down','↓','した']].map(([d,s,n])=>'<button class="pad-key '+d+'" data-dir="'+d+'" aria-label="'+n+'へ移動">'+s+'</button>').join('')+'<span class="pad-center">✦</span></div><div class="action-pad"><button class="action-button b-button" data-action="b" aria-label="B ジャンプ"><b>B</b><small>ジャンプ</small></button><button class="action-button a-button" data-action="a" aria-label="A しらべる"><b>A</b><small>しらべる</small></button></div><p id="control-status" role="status" aria-live="polite"></p></section>');
     status=document.getElementById('control-status');
     document.querySelectorAll('[data-dir]').forEach(b=>{
