@@ -9,7 +9,8 @@
 - `adventure.js`：料理・会話・イベント定義、進行、保存、設定
 - `storybook.css`：レスポンシブ表示
 - `assets/`：ユーザー提供の原画と参考画像（改変なし）
-- `GAME_SPEC.md`：v2.1要件・実装状況・未実装項目
+- `GAME_SPEC.md`：統合開発要件仕様書 v3.1（要件ID・受け入れ基準・2026-11-03時点の現状調査）
+- `docs/reference/`：ユーザー提供の参考画像（表紙・画面イメージ・キャラクター原画）
 - `test-game.cjs`：Playwrightによる進行テスト（PlaywrightとChromiumが必要）
 
 ## 検証
