@@ -1,34 +1,53 @@
-/* Full-viewport town interface: scenery stays uninterrupted beneath controls. */
-#app:has(.town-play){max-width:none;width:100%;height:100dvh;min-height:0;overflow:hidden;background:#c7e5a2}
-.town-play{position:relative;width:100%;height:100dvh;min-height:480px;overflow:hidden;background:#c4e5a1;isolation:isolate}
-.town-play .map{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;min-height:0!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;touch-action:none}
-.town-play .world{filter:saturate(1.04)}
-.town-play .top{position:absolute!important;top:max(8px,env(safe-area-inset-top));left:10px;right:10px;z-index:20;pointer-events:none;background:transparent!important;border:0!important;padding:0!important;display:flex!important;align-items:flex-start!important}
-.town-play .brand{background:#fff9e7f2;border:2px solid #e9b85b;border-radius:20px;padding:8px 12px;box-shadow:0 4px 0 #98764d6b;font-size:15px!important;max-width:65%}
-.town-play .pill{pointer-events:auto;margin-right:55px;background:#fff4baed;font-size:12px;padding:7px}
-.town-menu-toggle{position:absolute;z-index:32;right:12px;top:max(8px,env(safe-area-inset-top));height:46px;width:48px;border:3px solid #fff9d8;border-radius:15px;background:#f4a953;color:#59351e;font-size:25px;box-shadow:0 4px #ad703d}
-.town-menu-panel{position:absolute;z-index:31;top:calc(max(8px,env(safe-area-inset-top)) + 55px);right:10px;left:10px;max-width:420px;margin-left:auto;border:3px solid #edc16f;background:#fff8e9f7;border-radius:23px;padding:13px;box-shadow:0 9px 20px #4e3b3159;backdrop-filter:blur(6px)}
-.town-menu-panel[hidden]{display:none!important}
-.town-menu-panel .mission{border:0;background:transparent;box-shadow:none;padding:3px}
-.town-menu-panel .mission h3{font-size:15px!important;color:#9c5e2e;margin-bottom:6px}
-.town-menu-panel .mission .small{display:block!important;font-size:12px}
-.town-menu-panel .mission .progress{font-size:12px!important}
-.town-menu-panel .nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.town-menu-panel .nav button{font-size:12px!important;min-height:49px!important;border:2px solid #e6b87e;background:#fffefa;color:#805233;border-radius:14px}
-.town-play .game-controls{position:absolute!important;z-index:22;left:0;right:0;bottom:0;min-height:168px;display:flex!important;align-items:flex-end!important;justify-content:space-between!important;padding:0 20px max(23px,env(safe-area-inset-bottom))!important;background:linear-gradient(transparent,#304b1a19)!important;border:0!important;pointer-events:none}
+/* Full-viewport town: the painted map is the whole screen; HUD and pads float on it. */
+#app:has(.town-play){max-width:560px;width:100%;height:100dvh;min-height:0;overflow:hidden;background:#c7e5a2;padding:0}
+.town-play{position:relative;width:100%;height:100dvh;min-height:460px;overflow:hidden;background:#c4e5a1;isolation:isolate;animation:sceneIn .35s ease-out}
+.town-play.leaving{animation:sceneOut .22s ease-in forwards}
+@keyframes sceneIn{from{opacity:0;filter:brightness(1.25)}to{opacity:1}}
+@keyframes sceneOut{to{opacity:0;filter:brightness(1.4)}}
+.town-play .map{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;min-height:0!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;touch-action:none;background:#bfe09a}
+.town-play .world{will-change:transform}
+.town-play .map:after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 50px #72531c30}
+/* building tap areas stay invisible; names are on wooden signs instead */
+.town-play .painted-spot{z-index:2}.town-play .painted-spot .building-name,.town-play .painted-spot .door-light{display:none}
+.town-sign{position:absolute;z-index:100;transform:translate(-50%,-100%);white-space:nowrap;pointer-events:none;font-size:13px;font-weight:900;color:#5a3a26;padding:4px 10px 5px;border:2.5px solid #5a3a26;border-radius:8px 12px 9px 11px;background:linear-gradient(#f3cf93,#e2ad6a);box-shadow:0 3px 0 #8a5a33aa;letter-spacing:.5px}
+.town-sign.goal{background:linear-gradient(#fff3a8,#ffd05a);transform:translate(-50%,-100%) scale(1.12)}
+.town-door{position:absolute;z-index:3;width:46px;height:20px;margin:-10px 0 0 -23px;border-radius:50%;background:radial-gradient(#fff8c4 0,#fff1a0aa 45%,transparent 70%);pointer-events:none;animation:doorPulse 1.8s ease-in-out infinite}
+@keyframes doorPulse{50%{transform:scale(1.25);opacity:.7}}
+.town-flower{position:absolute;z-index:4;width:16px;height:16px;margin:-8px;border-radius:50%;background:radial-gradient(#ffe27a 0 28%,var(--c) 30% 100%);box-shadow:0 0 0 2px #5a3a26;pointer-events:none;animation:bloom .6s ease-out both}
+@keyframes bloom{from{transform:scale(0)}}
+.town-bunting{position:absolute;z-index:4;width:200px;height:26px;pointer-events:none;background:conic-gradient(from 150deg at 50% 0,#f47ca0 0 60deg,transparent 60deg) 0 0/20px 22px repeat-x,linear-gradient(#5a3a26,#5a3a26) 0 0/100% 2px no-repeat}
+.dragon{z-index:10}
+/* goal marker */
+.guide-marker{position:absolute;z-index:120;pointer-events:none}
+.guide-ring{position:absolute;left:-34px;top:-16px;width:68px;height:32px;border-radius:50%;border:4px dashed #fff36b;box-shadow:0 0 14px #fff6a7;animation:ringSpin 3s linear infinite}
+@keyframes ringSpin{to{transform:rotate(360deg)}}
+.guide-arrow{position:absolute;left:-17px;top:-120px;width:34px;height:34px;fill:#f47ca0;stroke:#5a3a26;stroke-width:3;stroke-linejoin:round;animation:arrowBob .9s ease-in-out infinite alternate}
+@keyframes arrowBob{to{transform:translateY(12px)}}
+.guide-bubble{position:absolute;left:-30px;top:-182px;width:60px;height:60px;border-radius:50%;background:#fffdf3;border:3px solid #5a3a26;box-shadow:0 4px 0 #5a3a2655;display:grid;place-items:center}
+.guide-bubble:after{content:'';position:absolute;bottom:-11px;left:23px;border:8px solid transparent;border-top:9px solid #5a3a26}
+.guide-bubble svg{width:46px;height:46px}
+.guide-edge{position:absolute;z-index:24;width:56px;height:56px;margin:-28px;border-radius:50%;background:#fffdf3ee;border:3px solid #5a3a26;display:grid;place-items:center;pointer-events:none;box-shadow:0 4px 0 #5a3a2655;animation:edgePulse 1s ease-in-out infinite alternate}
+.guide-edge[hidden]{display:none}
+.guide-edge svg{width:36px;height:36px;fill:#f47ca0;stroke:#5a3a26;stroke-width:3;stroke-linejoin:round}
+@keyframes edgePulse{to{scale:1.1}}
+/* HUD */
+.town-hud{position:absolute;z-index:30;top:max(8px,env(safe-area-inset-top));left:8px;right:8px;display:flex;gap:8px;align-items:flex-start;pointer-events:none}
+.hud-mission{pointer-events:auto;flex:1;min-width:0;text-align:left;padding:6px 10px 8px;border-radius:14px 18px 16px 20px;border:3px solid #5a3a26;background:#fff8e6f2;box-shadow:0 4px 0 #5a3a2655;color:#5a3a26}
+.hud-title{display:block;font-size:11px;font-weight:900;color:#b4572f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud-items{display:flex;gap:4px;margin-top:3px;flex-wrap:nowrap}
+.hud-items>.kd-icon{width:30px;height:30px}
+.hud-slot{position:relative;width:34px;height:34px;border-radius:10px;background:#efe3c8;border:2px dashed #b99b6e;display:grid;place-items:center;flex-shrink:0}
+.hud-slot .kd-item{width:28px;height:28px;filter:grayscale(1) opacity(.45)}
+.hud-slot.got{background:#fff3c4;border:2px solid #e3b450}.hud-slot.got .kd-item{filter:none}
+.hud-slot .kd-check{position:absolute;right:-7px;bottom:-7px;width:20px;height:20px}
+.town-menu-toggle{pointer-events:auto;flex-shrink:0;width:62px;height:62px;border-radius:18px;border:3px solid #5a3a26;background:#ffcf5a;color:#5a3a26;box-shadow:0 4px 0 #5a3a2688;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:900;padding:0}
+.town-menu-toggle .kd-icon{width:30px;height:30px}
+/* overlay pads */
+.town-play .game-controls{position:absolute!important;z-index:22;left:0;right:0;bottom:0;display:flex!important;align-items:flex-end!important;justify-content:space-between!important;padding:0 14px max(16px,env(safe-area-inset-bottom))!important;background:none!important;border:0!important;pointer-events:none;min-height:0}
 .town-play .game-controls .dpad,.town-play .game-controls .action-pad{pointer-events:auto}
-.town-play .game-controls .dpad{grid-template:repeat(3,43px)/repeat(3,47px);filter:drop-shadow(0 5px 2px #28472d55)}
-.town-play .game-controls .pad-key,.town-play .game-controls .pad-center{background:#fff4d8e8;color:#4d7462;border-color:#d5b77d;backdrop-filter:blur(3px)}
-.town-play .game-controls .pad-key.pressed{background:#a5d3c4;color:#255a56}
-.town-play .game-controls .action-button{width:67px;height:67px;box-shadow:0 4px 0 #784b38,0 0 0 2px #fff4d5;backdrop-filter:blur(2px)}
-.town-play .game-controls .a-button{background:#f79c4ae8}.town-play .game-controls .b-button{background:#70b5d6e8}
-.town-play .game-controls #control-status{position:absolute;bottom:calc(158px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:max-content;max-width:85%;padding:7px 13px;background:#fff9e8e8;border:2px solid #e7c77f;border-radius:16px;font-size:12px;font-weight:800;color:#775137;pointer-events:none}
-.town-play .map-tip{display:none!important}
-.town-play .painted-spot .door-light{font-size:30px;bottom:3px;text-shadow:0 0 6px #f7e789,0 0 12px #fff7a8;animation:doorGlow 2s ease-in-out infinite alternate}
-@keyframes doorGlow{from{opacity:.45;transform:scale(.9)}to{opacity:1;transform:scale(1.2)}}
-.town-play .painted-spot .building-name{opacity:.95;bottom:-8px;background:#fff8dcdd;font-size:12px;font-weight:900;box-shadow:0 2px #e4c27e}
-.town-play .dragon{z-index:9}
-.town-play .map:after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 40px #72531c25}
-@media(max-width:360px){.town-play .game-controls{padding-inline:12px!important}.town-play .game-controls .dpad{grid-template:repeat(3,39px)/repeat(3,42px)}.town-play .game-controls .action-button{width:59px;height:59px}}
-@media(max-height:680px){.town-play .game-controls .dpad{grid-template-rows:repeat(3,35px)}.town-play .game-controls{min-height:135px}.town-play .game-controls #control-status{bottom:calc(133px + env(safe-area-inset-bottom))}}
-@media(prefers-reduced-motion:reduce){.town-play .painted-spot .door-light{animation:none}}
+.town-play #control-status{position:absolute;bottom:calc(150px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:max-content;max-width:80%;padding:6px 14px;background:#fff8e6ee;border:3px solid #5a3a26;border-radius:16px 20px 18px 14px;font-size:14px;font-weight:900;color:#5a3a26;pointer-events:none;margin:0;box-shadow:0 3px 0 #5a3a2655}
+.town-play #control-status.here{background:#fff3a8}
+.town-play #control-status:empty{display:none}
+@media(max-width:360px){.hud-slot{width:30px;height:30px}.hud-slot .kd-item{width:24px;height:24px}.town-menu-toggle{width:54px;height:54px}}
+@media(prefers-reduced-motion:reduce){.town-door,.guide-ring,.guide-arrow,.guide-edge,.town-play{animation:none!important}}
+.town-sign.near{background:linear-gradient(#fff,#fff3a8);transform:translate(-50%,-100%) scale(1.25);box-shadow:0 3px 0 #8a5a33aa,0 0 0 4px #fff36b}
