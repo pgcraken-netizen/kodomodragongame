@@ -6,11 +6,13 @@ const recipes={
 };
 const extras=[['🪵','まき','森'],['🍲','おなべ','広場']];
 const locals={craft:['工作の なかま','にんぎょうに リボンをつけて、しあげよう！','🎀 つくる'],tailor:['仕立て屋さん','この ぬのを つかってね。おわったら かえしてね。','🤝 かりる'],music:['音楽の なかま','たいこで あめの おとを ならそう！','🤝 かりる'],storage:['倉庫の なかま','あった！ しょうめいを いっしょに はこぼう。','🔦 はこぶ'],field:['畑の なかま','そだった やさいを わけてあげるよ！','🥕 わけてもらう'],shop:['おみせの ひと','あれ？ たまねぎが ないね。ひろばの なかまに そうだんしよう！','🧺 うけとる'],forest:['森の なかま','まきが たりない！ おちている えだを ３ぼん あつめよう。','🪵 おちえだを ひろう'],square:['キャンプの なかま','こまったときは いっしょに かんがえよう！ おなべも かすよ。','🤝 かりる'],theater:['劇団の なかま','みんなの おてつだいで まくが あくよ！','🎭 じゅんび']};
-state.settings=Object.assign({sound:false,voice:false,volume:.3,reduce:matchMedia('(prefers-reduced-motion: reduce)').matches},state.settings);
+state.settings=Object.assign({sound:true,voice:false,volume:.4,reduce:matchMedia('(prefers-reduced-motion: reduce)').matches},state.settings);
+if(!state.settings.v2){state.settings.v2=true;state.settings.sound=true;if(state.settings.volume<.2)state.settings.volume=.4;}
+state.intro=state.intro||{};
 state.side=state.side||{};state.items=state.items&&typeof state.items==='object'?state.items:{};state.done=state.done||{};state.chapter=state.done[0]?1:0;state.meal=recipes[state.meal]?state.meal:'カレー';state.position=state.position&&Number.isFinite(state.position.x)?state.position:{x:360,y:360};
 let storageFailed=false,visitTimer,progress=0,hintLevel=0;
 save=function(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{storageFailed=true}};
-current=function(){return state.chapter===0?missions[0]:{name:'キャンプ場は大さわぎ！',desc:'なかまと そうだんして ごはんを つくろう！',needs:[...recipes[state.meal],...extras]}};
+current=function(){return state.chapter===0?missions[0]:{name:'キャンプじょうは おおさわぎ！',desc:'なかまと そうだんして ごはんを つくろう！',needs:[...recipes[state.meal],...extras]}};
 const baseRender=render;
 function wrap(title,body){el('<main class="screen"><div class="eyebrow">KODOMO DRAGON · WAKUWAKU TOWN</div><h1>'+title+'</h1>'+body+btn('← まちにもどる',"show('map')",'primary secondary wide')+'</main>')}
 function say(text){if(state.settings.voice&&'speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=.8;speechSynthesis.speak(u)}}
